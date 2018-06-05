@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 通过bean标签设置类的信息,通过id属性为类起标识. -->
+	<bean id="HelloService" class="com.random.spring.ioc1.test.HelloServiceImpl">
+		<!-- 使用<property>标签注入属性 -->
+		<property name="info" value="message"/>
+	</bean>
+	<!-- IOC转配Bean的三种方式 :
+		1.无参构造方法       (默认情况)
+		2.静态工厂实例化
+		3.实例工厂实例化
+	-->
+</beans>
