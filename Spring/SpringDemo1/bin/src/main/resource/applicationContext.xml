@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 通过bean标签设置类的信息,通过id属性为类起标识. -->
+	<bean id="HelloService" class="com.random.spring.ioc1.test.HelloServiceImpl">
+		<!-- 使用<property>标签注入属性 -->
+		<property name="info" value="message"/>
+	</bean>
+	<!-- IOC装配Bean的三种方式 :
+		1.(默认无参)构造方法实例化       (默认情况)
+		2.静态工厂实例化
+		3.实例工厂实例化
+	-->
+	<!-- 构造方法实例化   -->
+	<bean id="bean1" class="com.random.spring.ioc2.test.Bean1"></bean>
+	<!-- 静态工厂实例化   -->
+	<bean id="bean2" class="com.random.spring.ioc2.test.Bean2Factory" factory-method="getBean2"></bean>
+	<!-- 实例工厂实例化   -->
+	<bean id="bean3" factory-bean="Bean3Factory" factory-method="getBean3"></bean>
+	<bean id="Bean3Factory" class="com.random.spring.ioc2.test.Bean3Factory"></bean>
+	
+	<!-- id:   是唯一的,且命名有约束     (一般使用)
+		 name: 在没有配置id的时候,name可以充当id
+		 scope: singleton-单例(单例)
+		 		prototype-多例
+		 		request-web开发中,创建了一个对象,存入request范围,调用了request.Attribute()
+		 		session-web开发中,创建了一个对象,存入session范围,调用了session.Attribute()
+		 		globalSession-全局session.例如登陆了百度,百度贴吧,百度图片都不用重新登录
+	 -->
+	<!-- singleton单例(默认) -->
+	<bean id="singletonbean" class="com.random.spring.ioc2.test.Bean1"></bean>
+	<!-- prototype单例(默认) -->
+	<bean id="prototypebean" class="com.random.spring.ioc2.test.Bean1" scope="prototype"></bean>
+	
+	
+	
+	
+</beans>
