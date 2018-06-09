@@ -1,41 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:p="http://www.springframework.org/schema/p"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+
+	<!--111111111111111111111    ioc1.test    1111111111111111111111111-->
 	<!-- 通过bean标签设置类的信息,通过id属性为类起标识. -->
-	<bean id="HelloService" class="com.random.spring.ioc1.test.HelloServiceImpl">
-		<!-- 使用<property>标签注入属性 -->
-		<property name="info" value="message"/>
-	</bean>
+	<!--<bean id="HelloService" class="com.random.spring.ioc1.test.HelloServiceImpl">
+		&lt;!&ndash; 使用<propertyInjection>标签注入属性 &ndash;&gt;
+		&lt;!&ndash;<property name="info" value="message"/>&ndash;&gt;
+	</bean>-->
+
+	<!--111111111111111111111    ioc2.test    1111111111111111111111111-->
 	<!-- IOC装配Bean的三种方式 :
 		1.(默认无参)构造方法实例化       (默认情况)
 		2.静态工厂实例化
 		3.实例工厂实例化
 	-->
 	<!-- 构造方法实例化   -->
-	<bean id="bean1" class="com.random.spring.ioc2.test.Bean1"></bean>
-	<!-- 静态工厂实例化   -->
+	<!--<bean id="bean1" class="com.random.spring.ioc2.test.Bean1"></bean>
+	&lt;!&ndash; 静态工厂实例化   &ndash;&gt;
 	<bean id="bean2" class="com.random.spring.ioc2.test.Bean2Factory" factory-method="getBean2"></bean>
-	<!-- 实例工厂实例化   -->
+	&lt;!&ndash; 实例工厂实例化   &ndash;&gt;
 	<bean id="bean3" factory-bean="Bean3Factory" factory-method="getBean3"></bean>
 	<bean id="Bean3Factory" class="com.random.spring.ioc2.test.Bean3Factory"></bean>
 	
-	<!-- id:   是唯一的,且命名有约束     (一般使用)
+	&lt;!&ndash; id:   是唯一的,且命名有约束     (一般使用)
 		 name: 在没有配置id的时候,name可以充当id
 		 scope: singleton-单例(单例)
 		 		prototype-多例
 		 		request-web开发中,创建了一个对象,存入request范围,调用了request.Attribute()
 		 		session-web开发中,创建了一个对象,存入session范围,调用了session.Attribute()
 		 		globalSession-全局session.例如登陆了百度,百度贴吧,百度图片都不用重新登录
-	 -->
-	<!-- singleton单例(默认) -->
+	 &ndash;&gt;
+	&lt;!&ndash; singleton单例(默认) &ndash;&gt;
 	<bean id="singletonbean" class="com.random.spring.ioc2.test.Bean1"></bean>
-	<!-- prototype单例(默认) -->
-	<bean id="prototypebean" class="com.random.spring.ioc2.test.Bean1" scope="prototype"></bean>
-	
-	
-	
-	
+	&lt;!&ndash; prototype单例(默认) &ndash;&gt;
+	<bean id="prototypebean" class="com.random.spring.ioc2.test.Bean1" scope="prototype"></bean>-->
+
+	<!--111111111111111111111    bean.lifestyle    1111111111111111111111111-->
+	<!--&lt;!&ndash;bean的生命周期&ndash;&gt;
+	<bean id="CustomerService" class="com.random.spring.bean.lifestyle.CustomerServiceImpl" init-method="setup" destroy-method="teardown">
+		<property name="name" value="random"></property>
+	</bean>
+	<bean class="com.random.spring.bean.lifestyle.MyBeanPostProcessor"></bean>
+-->
+	<!--111111111111111111111    bean.propertyInjection    1111111111111111111111111-->
+	<!--bean的属性注入:
+		构造器注入:constructor-arg
+		setter方法注入普通属性和对象属性	property
+		p名称空间属性注入	需引入名称空间:  xmlns:p="http://www.springframework.org/schema/p"
+			p:<属性名>="xxx" 引入常量值
+			p:<属性名>-ref="xxx" 引用其它Bean对象
+		SpEL:属性注入
+			语法：#{表达式}
+			<bean id="" value="#{表达式}">
+	-->
+	<!--构造方法注入-->
+	<!--<bean id="Car" class="com.random.spring.bean.propertyInjection.Car">
+		<constructor-arg name="name" value="宝马"></constructor-arg>
+		<constructor-arg name="price" value="10000.0"></constructor-arg>
+		&lt;!&ndash;<constructor-arg index="0" type="java.lang.String" value="宝马"></constructor-arg>&ndash;&gt;
+		&lt;!&ndash;<constructor-arg index="1" type="java.lang.Double" value="10000.0"></constructor-arg>&ndash;&gt;
+	</bean>-->
+	<!--setter方法注入普通属性-->
+	<!--<bean id="Car2" class="com.random.spring.bean.propertyInjection.Car2">-->
+		<!--&lt;!&ndash;property标签中name是属性的名称,value是普通属性的值&ndash;&gt;-->
+		<!--<property name="name" value="保时捷"></property>-->
+		<!--<property name="price" value="1000000"></property>-->
+	<!--</bean>-->
+	<!--setter方法注入普通属性和对象属性-->
+	<!--<bean id="Person" class="com.random.spring.bean.propertyInjection.Person">
+		&lt;!&ndash;property标签中name是属性的名称,value是普通属性的值,ref是其他的对象&ndash;&gt;
+		<property name="name" value="random"></property>
+		<property name="car2" ref="Car2"></property>
+	</bean>-->
+	<!--Spring2.5之后引入了名称空间p注入属性-->
+	<!--<bean id="Car2" class="com.random.spring.bean.propertyInjection.Car2" p:name="宝马" p:price="200000">
+	</bean>-->
+	<!--<bean id="Person" class="com.random.spring.bean.propertyInjection.Person" p:name="random" p:car2-ref="Car2">
+	</bean>-->
+	<!--SpEL:属性注入普通属性、对象属性、某个类中的方法-->
+	<!--<bean id="Car2" class="com.random.spring.bean.propertyInjection.Car2">
+		&lt;!&ndash;property标签中name是属性的名称,value是普通属性的值&ndash;&gt;
+		<property name="name" value="#{'大众'}"></property>
+		<property name="price" value="#{'10000'}"></property>
+	</bean>
+	<bean id="Person" class="com.random.spring.bean.propertyInjection.Person">
+		&lt;!&ndash;<property name="name" value="#{PersonInfo.name}"></property>&ndash;&gt;
+		<property name="name" value="#{PersonInfo.showName()}"></property>
+		<property name="car2" value="#{Car2}"></property>
+	</bean>
+	<bean id="PersonInfo" class="com.random.spring.bean.propertyInjection.PersonInfo">
+		<property name="name" value="张三"></property>
+	</bean>-->
+
+	<!--加载配置文件-->
+	<!--一种写法:-->
+	<!--ApplicationContext applicationContext = new ClassPathXmlApplicationContext("bean1.xml",”bean2.xml”);-->
+	<!--二种方法:-->
+	<!--<import resource="applicationContext2.xml"/>-->
+
+
+
 </beans>

@@ -1,5 +1,9 @@
 package com.random.spring.ioc.test;
 
+import com.random.spring.bean.lifestyle.CustomerService;
+import com.random.spring.bean.propertyInjection.Car;
+import com.random.spring.bean.propertyInjection.Car2;
+import com.random.spring.bean.propertyInjection.Person;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
@@ -98,9 +102,51 @@ public class IocTest {
 		Bean1 bean2 = (Bean1)(applicationContext.getBean("prototypebean"));
 		System.out.println(bean2);
 	}
-	
-	
-	
-	
-	
+
+	@Test
+	/**
+	 * bean的生命周期
+	 */
+	public void beanLifestyleTest(){
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+				"applicationContext.xml");
+		CustomerService CustomerService = (CustomerService)(applicationContext.getBean("CustomerService"));
+		CustomerService.add();
+		CustomerService.find();
+
+		((ClassPathXmlApplicationContext) applicationContext).close();
+	}
+
+	@Test
+	/**
+	 * bean的属性注入-------构造方法注入
+	 */
+	public void beanPropertyInjectionTest1(){
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+				"applicationContext.xml");
+		Car car = (Car)(applicationContext.getBean("Car"));
+		System.out.println(car);
+	}
+	@Test
+	/**
+	 * bean的属性注入-------setting方法注入普通属性
+	 */
+	public void beanPropertyInjectionTest2(){
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+				"applicationContext.xml");
+		Car2 car2 = (Car2)(applicationContext.getBean("Car2"));
+		System.out.println(car2);
+	}
+	@Test
+	/**
+	 * bean的属性注入-------setting方法注入普通属性及对象
+	 */
+	public void beanPropertyInjectionTest3(){
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+				"applicationContext.xml");
+		Person person = (Person)(applicationContext.getBean("Person"));
+		System.out.println(person);
+	}
+
+
 }
