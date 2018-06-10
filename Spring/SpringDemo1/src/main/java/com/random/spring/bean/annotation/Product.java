@@ -1,0 +1,22 @@
+package com.random.spring.bean.annotation;
+
+public class Product {
+    private String name;
+    private Double price;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
+}

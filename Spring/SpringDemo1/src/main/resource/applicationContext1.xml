@@ -7,5 +7,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- bean definitions here -->
+	<!--IOC装配bean-->
+	<!--注解的方式装配bean-->
+	<context:component-scan base-package="com.random.spring.bean.annotation"/>
+
+	<!--	实际开发中 (视情况而定)
+		最佳:
+			使用XML进行bean管理
+			使用注解注入属性
+	-->
+	<!--使得CustomerService中的注解可用-->
+	<context:annotation-config/>
+	<bean id="customerDAO" class="com.random.spring.bean.bothXMLandAnnotation.CustomerDAO"></bean>
+	<bean id="orderDAO" class="com.random.spring.bean.bothXMLandAnnotation.OrderDAO"></bean>
+	<bean id="customerService" class="com.random.spring.bean.bothXMLandAnnotation.CustomerService">
+		<property name="customerDAO" ref="customerDAO"></property>
+		<!--<property name="orderDAO" ref="orderDAO"></property>-->
+	</bean>
+
 
 </beans>
