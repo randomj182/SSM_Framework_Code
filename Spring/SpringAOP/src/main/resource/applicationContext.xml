@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!--传统的AOP: 
+		AOP:不是由Spring定义.AOP联盟的组织定义.
+		Spring中的通知:(增强代码)
+			前置通知 org.springframework.aop.MethodBeforeAdvice	* 在目标方法执行前实施增强
+			后置通知 org.springframework.aop.AfterReturningAdvice	* 在目标方法执行后实施增强
+			环绕通知 org.aopalliance.intercept.MethodInterceptor	* 在目标方法执行前后实施增强
+			异常抛出通知 org.springframework.aop.ThrowsAdvice		* 在方法抛出异常后实施增强
+			引介通知 org.springframework.aop.IntroductionInterceptor(课程不讲.)
+				* 在目标类中添加一些新的方法和属性
+	 -->
+	<!--Spring中的切面类型: 
+			Advisor : Spring中传统切面.
+				Advisor:都是有一个切点和一个通知组合.
+				Aspect:多个切点和多个通知组合.
+			Advisor : 代表一般切面，Advice本身就是一个切面，对目标类所有方法进行拦截(* 不带有切点的切面.针对所有方法进行拦截)
+			PointcutAdvisor : 代表具有切点的切面，可以指定拦截目标类哪些方法(带有切点的切面,针对某个方法进行拦截)
+			IntroductionAdvisor : 代表引介切面，针对引介通知而使用切面（不要求掌握） 
+	-->
+	<!--代理的属性:
+		target : 代理的目标对象
+		proxyInterfaces : 代理要实现的接口
+		如果多个接口可以使用以下格式赋值
+		<list>
+		    <value></value>
+		    ....
+		</list>
+		proxyTargetClass : 是否对类代理而不是接口，设置为true时，使用CGLib代理
+		interceptorNames : 需要织入目标的Advice
+		singleton : 返回代理是否为单实例，默认为单例
+		optimize : 当设置为true时，强制使用CGLib -->
+		
+		
+	<!-- 不带有切点的切面  ***************************************** -->
+	<!-- 定义目标对象 -->
+	<!-- <bean id="customerDAO" class="com.random.spring.aop.nopointcut.CustomerDAOImpl"></bean>
+	定义增强
+	<bean id="beforeAdvice" class="com.random.spring.aop.nopointcut.MyBeforeAdvice"></bean>
+
+	第四步:生成代理:(配置生成代理:)
+			Spring配置生成代理 :
+			生成代理Spring基于ProxyFactoryBean类.
+			底层自动选择使用JDK的动态代理还是CGLIB的代理.
+	
+	<bean id="customerDAOProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		设置目标对象
+		<property name="target" ref="customerDAO"></property>
+		设置实现的接口,value中写接口的全路径
+		<property name="proxyInterfaces" value="com.random.spring.aop.nopointcut.CustomerDAO"></property>
+		需要织入目标的Advice   应与上诉对应
+			   注:需要使用value,因为要的对象是:interceptorNames
+		
+		<property name="interceptorNames" value="beforeAdvice"></property>
+	</bean>
+	
+	带有切点的切面****************************************
+	定义目标对象
+	<bean id="orderDAO" class="com.random.spring.aop.pointcut.OrderDAO"></bean>
+	定义增强
+	<bean id="aroundAdvice" class="com.random.spring.aop.pointcut.MyAroundAdvice"></bean>
+	
+	定义切点切面
+	<bean id="myPointcutAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		定义表达式,规定哪些方法执行拦截
+		. 任意字符    *  任意个
+		<property name="pattern" value=".*"></property>
+		<property name="pattern" value="com\.random\.spring\.aop\.pointcut\.OrderDAO\.add.*"/>
+		<property name="patterns" value=".*add.*,.*find.*"></property>
+		应用增强
+		<property name="advice" ref="aroundAdvice"></property>
+	</bean>
+		
+	定义生成代理对象
+	<bean id="orderDAOProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		设置目标对象
+		<property name="target" ref="orderDAO"></property>
+		设置实现的接口,value中写接口的全路径
+		<property name="proxyTargetClass" value="true"></property>
+		在目标上应用增强
+		<property name="interceptorNames" value="myPointcutAdvisor"></property>
+	</bean> -->
+	
+	<!-- 前面的案例中，每个代理都是通过ProxyFactoryBean织入切面代理，
+	在实际开发中，非常多的Bean每个都配置ProxyFactoryBean开发维护量巨大
+		"*"自动创建代理(*****基于后处理Bean.在Bean创建的过程中完成的增强.生成Bean就是代理.)
+			BeanNameAutoProxyCreator 根据Bean名称创建代理 
+			DefaultAdvisorAutoProxyCreator 根据Advisor本身包含信息创建代理
+			* AnnotationAwareAspectJAutoProxyCreator 基于Bean中的AspectJ 注解进行自动代理
+	 -->
+	
+	<!-- 自动代理************************BeanNameAutoProxyCreator :按名称生成代理 -->
+	<!-- 定义目标对象 -->
+	<!-- <bean id="customerDAO" class="com.random.spring.aop.nopointcut.CustomerDAOImpl"></bean>
+	<bean id="orderDAO" class="com.random.spring.aop.pointcut.OrderDAO"></bean>
+	
+	定义增强
+	<bean id="beforeAdvice" class="com.random.spring.aop.nopointcut.MyBeforeAdvice"></bean>
+	<bean id="aroundAdvice" class="com.random.spring.aop.pointcut.MyAroundAdvice"></bean>
+
+	自动代理:按名称的代理 基于后处理Bean,后处理Bean不需要配置ID
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames" value="*Dao"/>
+		<property name="interceptorNames" value="beforeAdvice"/>
+	</bean> -->
+	
+	<!-- 自动代理************************ -->
+	<!-- 定义目标对象 -->
+	<bean id="customerDAO" class="com.random.spring.aop.nopointcut.CustomerDAOImpl"></bean>
+	<bean id="orderDAO" class="com.random.spring.aop.pointcut.OrderDAO"></bean>
+	
+	<!-- 定义增强 -->
+	<bean id="beforeAdvice" class="com.random.spring.aop.nopointcut.MyBeforeAdvice"></bean>
+	<bean id="aroundAdvice" class="com.random.spring.aop.pointcut.MyAroundAdvice"></bean>
+
+	<!-- 定义一个带有切点的切面 -->
+	<bean id="myPointcutAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="pattern" value=".*add.*"/>
+		<property name="advice" ref="aroundAdvice"/>
+	</bean>
+	<!-- 自动生成代理 -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
+	
+	
+</beans>
