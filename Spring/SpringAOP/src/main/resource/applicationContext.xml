@@ -108,7 +108,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="interceptorNames" value="beforeAdvice"/>
 	</bean> -->
 	
-	<!-- 自动代理************************ -->
+	<!-- 自动代理************************DefaultAdvisorAutoProxyCreator :根据切面中定义的信息生成代理 -->
 	<!-- 定义目标对象 -->
 	<bean id="customerDAO" class="com.random.spring.aop.nopointcut.CustomerDAOImpl"></bean>
 	<bean id="orderDAO" class="com.random.spring.aop.pointcut.OrderDAO"></bean>
