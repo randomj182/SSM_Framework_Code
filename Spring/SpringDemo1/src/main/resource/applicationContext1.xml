@@ -24,6 +24,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="customerDAO" ref="customerDAO"></property>
 		<!--<property name="orderDAO" ref="orderDAO"></property>-->
 	</bean>
-
-
+	<!-- 用于spring整合Junit -->
+	<context:component-scan base-package="com.random.spring.web"/>
+	<bean id="userService" class="com.random.spring.web.service.UserService"></bean>
 </beans>
