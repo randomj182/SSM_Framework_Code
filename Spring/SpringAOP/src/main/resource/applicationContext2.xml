@@ -15,7 +15,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="myAspect" class="com.random.spring.aspectjaop.AnnotationAdvisorPointcut.MyAspect"></bean> -->
 	
 	
-	<!-- com.random.spring.aspectjaop.asxml -->
+	<!-- com.random.spring.aspectjaop.asxml ***************************-->
 	<!-- 定义被增强的类 -->
 	<bean id="productDAO" class="com.random.spring.aspectjaop.asxml.ProductDAO"></bean>
 	<!-- 定义切面 -->
