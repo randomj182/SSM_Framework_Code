@@ -40,13 +40,32 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="user" value="${jdbc.user}"></property>
 		<property name="password" value="${jdbc.password}"></property>
 	</bean>
-	
+	<!-- JDBC CRUD******************************************* -->
 	<!-- 定义JDBC模板类 -->
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	<!-- <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
 	<bean id="userDAO" class="com.random.spring.dao.UserDAO">
 		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean> -->
+	
+	<!-- Spring事务管理环境搭建 -->
+	<!-- 业务层类 -->
+	<bean id="accountService" class="com.random.spring.transaction.AccountServiceImpl">
+		<!-- 在业务层注入Dao -->
+		<property name="accountDAO" ref="accountDAO"/>
+		<!-- 在业务层注入事务的管理模板 -->
+		<!-- <property name="transactionTemplate" ref="transactionTemplate"/> -->
 	</bean>
+	
+	<!-- 持久层类 -->
+	<bean id="accountDAO" class="com.random.spring.transaction.AccountDAOImpl">
+		<!-- 注入连接池对象,通过连接池对象创建模板 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	
+	
+	
 </beans>
