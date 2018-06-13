@@ -50,13 +50,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
 	</bean> -->
 	
-	<!-- Spring事务管理环境搭建 -->
+	<!-- Spring事务管理环境搭建 *************************-->
 	<!-- 业务层类 -->
 	<bean id="accountService" class="com.random.spring.transaction.AccountServiceImpl">
 		<!-- 在业务层注入Dao -->
 		<property name="accountDAO" ref="accountDAO"/>
+		<!-- 第三步:在业务层注入模板类:(模板类管理事务) -->
 		<!-- 在业务层注入事务的管理模板 -->
-		<!-- <property name="transactionTemplate" ref="transactionTemplate"/> -->
+		<property name="transactionTemplate" ref="transactionTemplate"/>
 	</bean>
 	
 	<!-- 持久层类 -->
@@ -64,8 +65,17 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<!-- 注入连接池对象,通过连接池对象创建模板 -->
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	
-	
-	
+	<!-- 第二步:注册事务模板类: -->
+	<!-- 事务管理的模板 -->
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager"/>
+	</bean>
+	<!-- 第一步:注册事务管理器: -->
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 需要注入连接池,通过连接池获得连接 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 1、2、3、4 手动编码的方式完成事务管理*************************-->
 	
 </beans>
