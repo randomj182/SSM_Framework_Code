@@ -12,14 +12,9 @@ public class AccountServiceImpl implements AccountService{
 	
 	private AccountDAO accountDAO;
 	//手动编码方式实现事务管理
-	private TransactionTemplate transactionTemplate;
 	
 	public void setAccountDAO(AccountDAO accountDAO) {
 		this.accountDAO = accountDAO;
-	}
-	//手动编码方式实现事务管理
-	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-		this.transactionTemplate = transactionTemplate;
 	}
 	
 	public void transfer(String from, String to, Double money) {

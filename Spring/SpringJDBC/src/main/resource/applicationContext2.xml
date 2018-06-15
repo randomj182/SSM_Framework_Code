@@ -54,15 +54,37 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<!-- 业务层类 -->
 	<bean id="accountService" class="com.random.spring.transaction.AccountServiceImpl">
 		<!-- 在业务层注入Dao -->
-		<property name="accountDAO" ref="accountDAO"/>
-		<!-- 第三步:在业务层注入模板类:(模板类管理事务) -->
-		
+		<property name="accountDAO" ref="accountDAO"/>		
 	</bean>
 	
 	<!-- 持久层类 -->
 	<bean id="accountDAO" class="com.random.spring.transaction.AccountDAOImpl">
 		<!-- 注入连接池对象,通过连接池对象创建模板 -->
 		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	
+	<!-- 第一步:注册平台事务管理器 -->
+	<!-- 事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 注入连接池 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 创建业务代码对象 -->
+	<!-- 配置生成代理对象 -->
+	<bean id="accountServiceProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<!-- 目标对象 -->
+		<property name="target" ref="accountService"></property>
+		<!-- 注入事务管理器 -->
+		<property name="transactionManager" ref="transactionManager"></property>
+		<!-- 事务的 属性设置-->
+		<property name="transactionAttributes">
+			<props>
+				<prop key="transfer">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+		
 	</bean>
 	
 </beans>
