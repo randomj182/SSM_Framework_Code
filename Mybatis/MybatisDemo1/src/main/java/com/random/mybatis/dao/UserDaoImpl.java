@@ -5,7 +5,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
-
+/* *
+ * @author	Radish
+ * @Description UserDAO实现类
+ * @date	17:03 2018/6/18
+ **/
 public class UserDaoImpl implements UserDAO {
     private SqlSessionFactory sqlSessionFactory;
     // 将SQLSessionFactory注入

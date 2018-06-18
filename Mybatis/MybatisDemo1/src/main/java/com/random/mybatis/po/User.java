@@ -1,5 +1,6 @@
 package com.random.mybatis.po;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户po类
@@ -10,6 +11,8 @@ public class User {
     private String sex;// 性别
     private Date birthday;// 生日
     private String address;// 地址
+    //多个订单
+    private List<Orders> orderList;
 
     public int getId() {
         return id;
@@ -49,6 +52,14 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Orders> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Orders> orderList) {
+        this.orderList = orderList;
     }
 
     @Override

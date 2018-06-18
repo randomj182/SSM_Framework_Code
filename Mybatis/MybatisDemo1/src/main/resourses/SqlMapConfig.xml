@@ -53,9 +53,9 @@
         <!-- 批量mapper配置
         通过package进行自动扫描包下边的mapper接口，
         要求：需要mapper.xml和mapper.java同名并且在一个目录 中
-            <package name="cn.itcast.mybatis.mapper"/>
         -->
-        <mapper resource="mapper/UserMapper.xml" />
+        <package name="com.random.mybatis.mapper"/>
+        <!--<mapper resource="mapper/UserMapper.xml" />-->
     </mappers>
 
 </configuration>

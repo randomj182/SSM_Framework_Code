@@ -12,7 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
-
+/* *
+ * @author	Radish
+ * @Description 测试类
+ * @date	18:03 2018/6/18
+ **/
 public class MybatisFirst {
     //会话工厂
     private SqlSessionFactory sqlSessionFactory;
