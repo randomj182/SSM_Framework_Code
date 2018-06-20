@@ -5,7 +5,24 @@
 <mapper namespace="com.random.mybatis.dao.StudentDao">
 	<!-- 向student表中插入一条数据 -->
 	<insert id="insertStudent" parameterType="student">
+		<selectKey keyProperty="id" order="AFTER" resultType="int">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
 		INSERT INTO student(name) VALUES(#{name})
 	</insert>
 	
+	<!-- 根据id删除一条学生记录 -->
+	<delete id="deleteStudentById" parameterType="int" >
+		DELETE FROM student WHERE id = #{id}
+	</delete>
+	
+	<!--  -->
+	<update id="updateStudent" parameterType="student">
+		UPDATE student SET name = #{name} WHERE id = #{id}
+	</update>
+	
+	<!-- 根据id查询一条记录 -->
+	<select id="findStudentById" parameterType="int" resultType="student">
+		SELECT * FROM student WHERE id = #{id}
+	</select>
 </mapper>

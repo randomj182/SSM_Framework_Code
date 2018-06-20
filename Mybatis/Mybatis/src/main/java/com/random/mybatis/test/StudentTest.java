@@ -37,9 +37,51 @@ public class StudentTest {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		StudentDao studentDao = sqlSession.getMapper(StudentDao.class);
 		Student student = new Student();
-		student.setName("aaaa");
+		student.setName("dddd");
 		studentDao.insertStudent(student);
 		sqlSession.commit();
 		sqlSession.close();
+		System.out.println(student.getId());
+	}
+	
+	@Test
+	/**
+	 * 测试mapper代理的方式,删除一个学生
+	 * @throws Exception
+	 */
+	public void testDeleteStudentById() throws Exception{
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		StudentDao studentDao = sqlSession.getMapper(StudentDao.class);
+		studentDao.deleteStudentById(4);
+		sqlSession.commit();
+		sqlSession.close();
+	}
+	
+	@Test
+	/**
+	 * 测试mapper代理的方式,更新一条学生数据信息
+	 * @throws Exception
+	 */
+	public void testUpdateStudent() throws Exception{
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		StudentDao studentDao = sqlSession.getMapper(StudentDao.class);
+		Student student = new Student();
+		student.setId(1);
+		student.setName("dddd");
+		studentDao.updateStudent(student);
+		sqlSession.commit();
+		sqlSession.close();
+	}
+	
+	@Test
+	/**
+	 * 测试mapper代理的方式,更新一条学生数据信息
+	 * @throws Exception
+	 */
+	public void testFindStudentById() throws Exception{
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		StudentDao studentDao = sqlSession.getMapper(StudentDao.class);
+		Student student = studentDao.findStudentById(1);
+		System.out.println(student);
 	}
 }
