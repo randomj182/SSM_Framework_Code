@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.random.mybatis.mapper.OrderMapper">
+    <!--一对一  resultMap实现  查询订单信息关联查询用户信息-->
+    <resultMap id="orderUserListResultMap" type="orders">
+        <!-- 此处先 实现订单信息的映射配置 -->
+        <!-- id：订单关联用户查询的唯 一 标识
+          property映射到Orders中的哪个属性
+          -->
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="number" property="number"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="note" property="note"></result>
+        <!--实现关联用户信息的映射配置
+         association：用于对关联信息映射到单个pojo
+		property：要将关联信息映射到orders的哪个属性中
+		javaType：关联信息映射到orders的属性的类型，是user的类型
+         -->
+        <association property="user" javaType="user">
+            <id column="id" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="sex" property="sex"></result>
+        </association>
+    </resultMap>
+
+    <!--一对一查询订单信息关联查询用户信息-->
+    <select id="findOrderUserList" resultMap="orderUserListResultMap">
+        SELECT orders.*,user.id,`user`.username,`user`.sex from orders,user WHERE orders.user_id = `user`.id
+    </select>
+
+    <!--一对多 resultMap查询 所有订单信息及订单下的订单明细信息-->
+    <resultMap id="orderDetailListResultMap" type="orders">
+        <!--实现订单信息的映射配置-->
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="number" property="number"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="note" property="note"></result>
+        <!--实现订单详细信息的映射配置-->
+        <collection property="orderdetail" ofType="Orderdetail">
+            <id column="id" property="id"></id>
+            <result column="orders_Id" property="ordersId"></result>
+            <result column="items_Id" property="itemsId"></result>
+            <result column="items_Num" property="itemsNum"></result>
+        </collection>
+    </resultMap>
+
+    <!--一对多查询所有订单信息及订单下的订单明细信息-->
+    <select id="findOrderDetailList" resultMap="orderDetailListResultMap">
+        SELECT orders.*,orderdetail.* from orders,orderdetail WHERE orders.id = orderdetail.orders_id
+    </select>
+
+    <!--一对多 resultMap复杂 查询所有订单信息及订单下的订单明细信息-->
+    <resultMap id="userOrderDetailListResultMap" type="user">
+        <!--实现用户信息的映射配置-->
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="sex" property="sex"></result>
+        <!--实现订单信息的映射配置-->
+        <collection property="ordersList" ofType="Orders">
+            <id column="id" property="id"></id>
+            <result column="user_id" property="userId"></result>
+            <result column="number" property="number"></result>
+            <result column="createtime" property="createtime"></result>
+            <result column="note" property="note"></result>
+            <!--实现订单详细信息的映射配置-->
+            <collection property="orderdetail" ofType="Orderdetail">
+                <id column="id" property="id"></id>
+                <result column="orders_Id" property="ordersId"></result>
+                <result column="items_Id" property="itemsId"></result>
+                <result column="items_Num" property="itemsNum"></result>
+                <!--实现商品信息的映射配置-->
+                <association property="items" javaType="Items">
+                    <id column="id" property="id"></id>
+                    <result column="name" property="name"></result>
+                    <result column="detail" property="detail"></result>
+                </association>
+            </collection>
+        </collection>
+
+    </resultMap>
+
+    <!--一对多查询所有订单信息及订单下的订单明细信息-->
+    <select id="findUserOrderDetailList" resultMap="userOrderDetailListResultMap">
+        select orders.*,`user`.id,`user`.username,`user`.sex,orderdetail.*,items.`name`,items.detail
+            from orders,`user`,orderdetail,items WHERE orders.user_id = `user`.id AND orders.id = orderdetail.orders_id AND orderdetail.items_id = items.id
+    </select>
+
+
+    <!--对多查询 显示字段：用户账号、用户名称、用户性别、商品名称、商品价格(最常见)
+    企业开发中常见明细列表，用户购买商品明细列表，
+    使用resultType将上边查询列映射到pojo输出。
+    -->
+    <select id="findUserItemsList" resultType="UserItems">
+        SELECT user.id,`user`.username,`user`.sex,items.name,items.price
+          from orders,`user`,orderdetail,items WHERE orders.user_id = `user`.id AND orders.id = orderdetail.orders_id AND orderdetail.items_id = items.id
+    </select>
+
+    <resultMap id="userOrderItemsListResultMap" type="User">
+        <!--实现用户信息的映射配置-->
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <!--实现订单明细信息的映射配置-->
+        <collection property="" ofType="">
+
+        </collection>
+
+    </resultMap>
+  <!-- 查询显示字段：用户账号、用户名称、购买商品数量、商品明细（鼠标移上显示明细）
+    使用resultMap将用户购买的商品明细列表映射到user对象中。
+    -->
+    <select id="findUserOrderItemsList" resultMap="userOrderItemsListResultMap">
+
+    </select>
+</mapper>
