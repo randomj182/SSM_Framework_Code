@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+	<!-- 插入一条学生记录   已定义别名,此处用大写或小写都可以-->
+	<insert id="insertStudent" parameterType="student">
+		INSERT INTO student(id,name) VALUES(#{id},#{name})
+	</insert>
+
+</mapper>
