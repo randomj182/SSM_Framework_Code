@@ -7,5 +7,4 @@
 	<insert id="insertStudent" parameterType="student">
 		INSERT INTO student(id,name) VALUES(#{id},#{name})
 	</insert>
-
 </mapper>
